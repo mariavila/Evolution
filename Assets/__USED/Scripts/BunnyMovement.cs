@@ -40,13 +40,4 @@ public class BunnyMovement : MonoBehaviour {
         bool walking = h != 0f || v!= 0f;
         anim.SetBool("IsWalking", walking);
     }
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
