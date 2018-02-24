@@ -1,23 +1,23 @@
-﻿using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class BunnyHealth : MonoBehaviour {
-    public float health = 5f;
+public class ElephantHealth : MonoBehaviour {
+    public float health = 10f;
     public float sinkSpeed = 2.5f;
 
-    Rigidbody bunnyRigidBody;
+    Rigidbody elephantRigidBody;
     Animator anim;
-    BunnyMovement bunnyMovement;
-    bool isDead;                                                
+    ElephantMovement elephantMovement;
+    bool isDead;
     bool damaged;
 
     void Awake()
     {
         // Setting up the references.
         anim = GetComponent<Animator>();
-        bunnyMovement = GetComponent<BunnyMovement>();
-        bunnyRigidBody = GetComponent<Rigidbody>();
+        elephantMovement = GetComponent<ElephantMovement>();
+        elephantRigidBody = GetComponent<Rigidbody>();
     }
 
 
@@ -58,9 +58,9 @@ public class BunnyHealth : MonoBehaviour {
 
         // Tell the animator that the player is dead.
         anim.SetTrigger("Die");
+        elephantMovement.enabled = false;
 
         // Turn off the movement and shooting scripts.
         Destroy(gameObject, 2f);
-        bunnyMovement.enabled = false;
     }
 }
