@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class BunnyHealth : MonoBehaviour {
-    public float health = 5f;
+    public float health = 100f;
     public float sinkSpeed = 2.5f;
 
     Rigidbody bunnyRigidBody;
@@ -62,5 +62,21 @@ public class BunnyHealth : MonoBehaviour {
         // Turn off the movement and shooting scripts.
         Destroy(gameObject, 2f);
         bunnyMovement.enabled = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Elephant"))
+        {
+            Death();
+        }
+
+        if (other.gameObject.CompareTag("Food"))
+        {
+            health += 10;
+            float h = UnityEngine.Random.Range(-20f, 20f);
+            float v = UnityEngine.Random.Range(-20f, 20f);
+            other.gameObject.transform.position = new Vector3(h, 0f, v);
+        }
     }
 }

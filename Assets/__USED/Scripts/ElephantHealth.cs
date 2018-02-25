@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ElephantHealth : MonoBehaviour {
-    public float health = 10f;
+    public float health = 500f;
     public float sinkSpeed = 2.5f;
 
     Rigidbody elephantRigidBody;
@@ -63,4 +63,12 @@ public class ElephantHealth : MonoBehaviour {
         // Turn off the movement and shooting scripts.
         Destroy(gameObject, 2f);
     }
-}
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Bunny"))
+        {
+            health +=50;
+        }
+    }
+ }

@@ -31,7 +31,8 @@ public class BunnyMovement : MonoBehaviour {
         movement.Set(h, 0f, v);
         movement = movement.normalized * speed * Time.deltaTime;
         bunnyRigidBody.MovePosition(transform.position + movement);
-        bunnyRigidBody.MoveRotation (Quaternion.LookRotation(movement));
+        if (movement != new Vector3(0f, 0f, 0f))
+            bunnyRigidBody.MoveRotation (Quaternion.LookRotation(movement));
     }
 
 

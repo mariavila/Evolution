@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Bunny
+  - Food
+  - Elephant
   layers:
   - Default
   - TransparentFX
