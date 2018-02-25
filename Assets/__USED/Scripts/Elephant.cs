@@ -104,7 +104,7 @@ public class Elephant : MonoBehaviour {
         {
             net.AddFitness(100f);
             canmove = false;
-            Invoke("Timer", 1f);
+            Invoke("Timer", 1.8f);
 
         }
     }

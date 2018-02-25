@@ -39,7 +39,7 @@ public class CameraController : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             c.position = c.position + new Vector3(Input.GetAxis("Mouse X") * sensitivity, 0, 0);
-            c.position = c.position + new Vector3(0, 0, -Input.GetAxis("Mouse Y") * sensitivity);
+            c.position = c.position + new Vector3(0, 0, Input.GetAxis("Mouse Y") * sensitivity);
 
         }
     }
