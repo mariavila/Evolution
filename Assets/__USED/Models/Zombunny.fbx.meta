@@ -106,7 +106,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 1
-    motionNodeName: 
+    motionNodeName: <Root Transform>
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
@@ -334,7 +334,7 @@ ModelImporter:
       name: Death
       takeName: Take 001
       firstFrame: 285
-      lastFrame: 300
+      lastFrame: 320
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
