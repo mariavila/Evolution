@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour {
+public class CameraController : MonoBehaviour
+{
 
     public float sensitivity = 10f;
     public float speed = 20f;
@@ -20,7 +21,6 @@ public class CameraController : MonoBehaviour {
         {
             c.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
         }
-
         else
         {
             float rotCameraY = c.rotation.eulerAngles.y;
