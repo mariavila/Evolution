@@ -15,6 +15,7 @@ public class BunnyMovement : MonoBehaviour {
     private Transform[] elephants;
     float prevout1 = 0f;
     float prevout2 = 0f;
+    private bool canmove = true;
 
     private void Awake()
     {
@@ -26,62 +27,64 @@ public class BunnyMovement : MonoBehaviour {
     //quan movem algo amb un rigidbody es crida
     private void FixedUpdate()
     {
-
-        float[] inputs = new float[8]; //foodx,foodz,mex,mez
-        float mindist = 1000f;
-        float mindist2 = 1000f;
-        int minpos = 0;
-        int minpos2 = 1;
-        for (int i = 0; i < food.Length; i++)
+        if (canmove)
         {
-            float aux = Vector2.Distance(transform.position, food[i].position);
-            if(aux < mindist)
+            float[] inputs = new float[8]; //foodx,foodz,mex,mez
+            float mindist = 1000f;
+            float mindist2 = 1000f;
+            int minpos = 0;
+            int minpos2 = 1;
+            for (int i = 0; i < food.Length; i++)
             {
-                mindist2 = mindist;
-                minpos2 = minpos;
-                mindist = aux;
-                minpos = i;
+                float aux = Vector2.Distance(transform.position, food[i].position);
+                if (aux < mindist)
+                {
+                    mindist2 = mindist;
+                    minpos2 = minpos;
+                    mindist = aux;
+                    minpos = i;
+                }
+                else if (aux < mindist2)
+                {
+                    mindist2 = aux;
+                    minpos2 = i;
+                }
             }
-            else if(aux < mindist2)
+
+            float mindisteleph = 1000f;
+            int minposeleph = 0;
+            for (int i = 0; i < elephants.Length; i++)
             {
-                mindist2 = aux;
-                minpos2 = i;
+                float aux = Vector2.Distance(transform.position, elephants[i].position);
+                if (aux < mindisteleph)
+                {
+                    mindisteleph = aux;
+                    minposeleph = i;
+                }
+
             }
+
+            inputs[0] = (food[minpos].position[0] - transform.position[0]) / 60f;
+            inputs[1] = (food[minpos].position[2] - transform.position[2]) / 60f;
+            inputs[2] = (food[minpos2].position[0] - transform.position[0]) / 60f;
+            inputs[3] = (food[minpos2].position[2] - transform.position[2]) / 60f;
+            inputs[4] = (elephants[minposeleph].position[0] - transform.position[0]) / 60f;
+            inputs[5] = (elephants[minposeleph].position[2] - transform.position[2]) / 60f;
+            inputs[6] = prevout1;
+            inputs[7] = prevout2;
+
+            float[] output = net.FeedForward(inputs);
+            float h = output[0];
+            float v = output[1];
+            //float h = Input.GetAxisRaw("Horizontal");
+            //float v = Input.GetAxisRaw("Vertical");
+            //if (Mathf.Abs(h) < 0.05f) h = 0;
+            //if (Mathf.Abs(v) < 0.05f) v = 0;
+
+            Move(h, v);
+            Animating(h, v);
+            //net.AddFitness( -(mindist / 100f));
         }
-
-        float mindisteleph = 1000f;
-        int minposeleph = 0;
-        for (int i = 0; i < elephants.Length; i++)
-        {
-            float aux = Vector2.Distance(transform.position, elephants[i].position);
-            if (aux < mindisteleph)
-            {
-                mindisteleph = aux;
-                minposeleph = i;
-            }
-
-        }
-
-        inputs[0] = (food[minpos].position[0]- transform.position[0])/ 60f;
-        inputs[1] = (food[minpos].position[2] - transform.position[2]) / 60f;
-        inputs[2] = (food[minpos2].position[0] - transform.position[0]) / 60f;
-        inputs[3] = (food[minpos2].position[2] - transform.position[2]) / 60f;
-        inputs[4] = (elephants[minposeleph].position[0] - transform.position[0]) / 60f;
-        inputs[5] = (elephants[minposeleph].position[2] - transform.position[2]) / 60f;
-        inputs[6] = prevout1;
-        inputs[7] = prevout2;
-        
-        float[] output = net.FeedForward(inputs);
-        float h = output[0];
-        float v = output[1];
-        //float h = Input.GetAxisRaw("Horizontal");
-        //float v = Input.GetAxisRaw("Vertical");
-        //if (Mathf.Abs(h) < 0.05f) h = 0;
-        //if (Mathf.Abs(v) < 0.05f) v = 0;
-
-        Move(h, v);
-        Animating(h, v);
-        //net.AddFitness( -(mindist / 100f));
     }
 
     void Move(float h, float v)
@@ -107,6 +110,13 @@ public class BunnyMovement : MonoBehaviour {
         this.elephants = elephants;
     }
 
+    private void Timer()
+    {
+        anim.SetBool("IsAlive", true);
+        canmove = true;
+
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Food"))
@@ -117,6 +127,10 @@ public class BunnyMovement : MonoBehaviour {
         else if (other.gameObject.CompareTag("Elephant"))
         {
             net.AddFitness(-150f);
+            anim.SetBool("IsAlive", false);
+            anim.SetTrigger("Die");
+            canmove = false;
+            Invoke("Timer", 1.5f);
         }
     }
 
