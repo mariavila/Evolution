@@ -30,7 +30,8 @@ public class ElephantMovement : MonoBehaviour {
         movement.Set(h, 0f, v);
         movement = movement.normalized * speed * Time.deltaTime;
         elephantRigidBody.MovePosition(transform.position + movement);
-        elephantRigidBody.MoveRotation(Quaternion.LookRotation(movement));
+        if (movement != new Vector3(0f, 0f, 0f))
+            elephantRigidBody.MoveRotation(Quaternion.LookRotation(movement));
     }
 
     void Animating(float h, float v)
